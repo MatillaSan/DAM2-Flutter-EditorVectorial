@@ -107,6 +107,13 @@ class LayoutDesignState extends State<LayoutDesign> {
                 if (event is RawKeyDownEvent) {
                   if (event.logicalKey == LogicalKeyboardKey.altLeft) {
                     _isAltOptionKeyPressed = true;
+                  } else if (event.isControlPressed &&
+                      event.isShiftPressed &&
+                      event.logicalKey == LogicalKeyboardKey.keyZ) {
+                    appData.redo();
+                  } else if (event.isControlPressed &&
+                      event.logicalKey == LogicalKeyboardKey.keyZ) {
+                    appData.undo();
                   }
                 } else if (event is RawKeyUpEvent) {
                   if (event.logicalKey == LogicalKeyboardKey.altLeft) {

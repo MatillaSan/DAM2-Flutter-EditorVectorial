@@ -11,6 +11,7 @@ class AppData with ChangeNotifier {
   String toolSelected = "shape_drawing";
   Shape newShape = Shape();
   List<Shape> shapesList = [];
+  List<Shape> shapesBin = [];
 
   bool readyExample = false;
   late dynamic dataExample;
@@ -78,6 +79,24 @@ class AppData with ChangeNotifier {
     if (newShape.vertices.length >= 2) {
       shapesList.add(newShape);
       newShape = Shape();
+      notifyListeners();
+    }
+  }
+
+  void undo() {
+    if (shapesList.isNotEmpty) {
+      // Add last shape to bin to save it and delete it from the board.
+      shapesBin.add(shapesList.last);
+      shapesList.removeLast();
+      notifyListeners();
+    }
+  }
+
+  void redo() {
+    if (shapesBin.isNotEmpty) {
+      // Add last shape to the board from the bin.
+      shapesList.add(shapesBin.last);
+      shapesBin.removeLast();
       notifyListeners();
     }
   }
