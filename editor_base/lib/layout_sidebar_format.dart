@@ -38,16 +38,9 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   Container(
                       alignment: Alignment.centerLeft,
                       width: 80,
-                      child: CDKFieldNumeric(
-                        value: appData.newShape.strokeWidth,
-                        min: 0.01,
-                        max: 100,
-                        units: "px",
-                        increment: 0.5,
-                        decimals: 2,
-                        onValueChanged: (value) {
-                          appData.setNewShapeStrokeWidth(value);
-                        },
+                      child: CDKButtonColor(
+                        onPressed: print("color"),
+                        color: appData.newShape.strokeColor,
                       )),
                 ]),
                 const SizedBox(height: 8),
@@ -59,6 +52,20 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                         width: labelsWidth,
                         child: Text("Stroke color:", style: font)),
                     const SizedBox(width: 4),
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        width: 80,
+                        child: CDKFieldNumeric(
+                          value: appData.newShape.strokeWidth,
+                          min: 0.01,
+                          max: 100,
+                          units: "px",
+                          increment: 0.5,
+                          decimals: 2,
+                          onValueChanged: (value) {
+                            appData.setNewShapeStrokeWidth(value);
+                          },
+                        )),
                   ],
                 ),
                 const SizedBox(height: 16),
