@@ -146,6 +146,25 @@ class LayoutDesignPainter extends CustomPainter {
     canvas.drawRect(rectRullerCorner, paintRulerTop);
   }
 
+  static void paintShape(Canvas canvas, Shape shape) {
+    if (shape.vertices.isNotEmpty) {
+      Paint paint = Paint();
+      paint.color = CDKTheme.black;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = shape.strokeWidth;
+      double x = shape.position.dx + shape.vertices[0].dx;
+      double y = shape.position.dy + shape.vertices[0].dy;
+      Path path = Path();
+      path.moveTo(x, y);
+      for (int i = 1; i < shape.vertices.length; i++) {
+        x = shape.position.dx + shape.vertices[i].dx;
+        y = shape.position.dy + shape.vertices[i].dy;
+        path.lineTo(x, y);
+      }
+      canvas.drawPath(path, paint);
+    }
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
     Size docSize = Size(appData.docSize.width, appData.docSize.height);
@@ -184,45 +203,19 @@ class LayoutDesignPainter extends CustomPainter {
       canvas.drawRect(Rect.fromLTWH(0, 0, docW, docH), paint);
     }
 
+    // Dibuixa el fons del document aquí ...
+
     // Dibuixa la llista de poligons (segons correspon, relatiu a la seva posició)
     if (appData.shapesList.isNotEmpty) {
       for (int i = 0; i < appData.shapesList.length; i++) {
-        Paint paint = Paint();
-        paint.color = CDKTheme.black;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 1;
         Shape shape = appData.shapesList[i];
-        double x = shape.position.dx + shape.vertices[0].dx;
-        double y = shape.position.dy + shape.vertices[0].dy;
-        Path path = Path();
-        path.moveTo(x, y);
-        for (int i = 1; i < shape.vertices.length; i++) {
-          x = shape.position.dx + shape.vertices[i].dx;
-          y = shape.position.dy + shape.vertices[i].dy;
-          path.lineTo(x, y);
-        }
-        canvas.drawPath(path, paint);
+        paintShape(canvas, shape);
       }
     }
 
     // Dibuixa el poligon que s'està afegint (relatiu a la seva posició)
-    if (appData.newShape.vertices.isNotEmpty) {
-      Paint paint = Paint();
-      paint.color = CDKTheme.black;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 1;
-      Shape shape = appData.newShape;
-      double x = shape.position.dx + appData.newShape.vertices[0].dx;
-      double y = shape.position.dy + appData.newShape.vertices[0].dy;
-      Path path = Path();
-      path.moveTo(x, y);
-      for (int i = 1; i < appData.newShape.vertices.length; i++) {
-        x = shape.position.dx + shape.vertices[i].dx;
-        y = shape.position.dy + shape.vertices[i].dy;
-        path.lineTo(x, y);
-      }
-      canvas.drawPath(path, paint);
-    }
+    Shape shape = appData.newShape;
+    paintShape(canvas, shape);
 
     // Restaura l'estat previ a l'escalat i translació
     canvas.restore();

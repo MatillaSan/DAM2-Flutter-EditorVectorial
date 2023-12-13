@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_data_actions.dart';
 import 'util_shape.dart';
 
 class AppData with ChangeNotifier {
@@ -6,6 +7,8 @@ class AppData with ChangeNotifier {
   // AppData appData = Provider.of<AppData>(context);
   // AppData appData = Provider.of<AppData>(context, listen: false)
 
+  ActionManager actionManager = ActionManager();
+  bool isAltOptionKeyPressed = false;
   double zoom = 95;
   Size docSize = const Size(500, 400);
   String toolSelected = "shape_drawing";
@@ -14,6 +17,10 @@ class AppData with ChangeNotifier {
 
   bool readyExample = false;
   late dynamic dataExample;
+
+  void forceNotifyListeners() {
+    super.notifyListeners();
+  }
 
   void setZoom(double value) {
     zoom = value.clamp(25, 500);
@@ -47,13 +54,13 @@ class AppData with ChangeNotifier {
   }
 
   void setDocWidth(double value) {
-    docSize = Size(value, docSize.height);
-    notifyListeners();
+    double previousWidth = docSize.width;
+    actionManager.register(ActionSetDocWidth(this, previousWidth, value));
   }
 
   void setDocHeight(double value) {
-    docSize = Size(docSize.width, value);
-    notifyListeners();
+    double previousHeight = docSize.height;
+    actionManager.register(ActionSetDocHeight(this, previousHeight, value));
   }
 
   void setToolSelected(String name) {
@@ -62,7 +69,6 @@ class AppData with ChangeNotifier {
   }
 
   void addNewShape(Offset position) {
-    newShape = Shape();
     newShape.setPosition(position);
     newShape.addPoint(const Offset(0, 0));
     notifyListeners();
@@ -76,9 +82,15 @@ class AppData with ChangeNotifier {
   void addNewShapeToShapesList() {
     // Si no hi ha almenys 2 punts, no es podrà dibuixar res
     if (newShape.vertices.length >= 2) {
-      shapesList.add(newShape);
+      double strokeWidthConfig = newShape.strokeWidth;
+      actionManager.register(ActionAddNewShape(this, newShape));
       newShape = Shape();
-      notifyListeners();
+      newShape.setStrokeWidth(strokeWidthConfig);
     }
+  }
+
+  void setNewShapeStrokeWidth(double value) {
+    newShape.setStrokeWidth(value);
+    notifyListeners();
   }
 }
