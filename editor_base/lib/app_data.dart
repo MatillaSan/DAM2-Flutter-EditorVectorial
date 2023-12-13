@@ -79,6 +79,7 @@ class AppData with ChangeNotifier {
     if (newShape.vertices.length >= 2) {
       shapesList.add(newShape);
       newShape = Shape();
+      shapesBin.clear();
       notifyListeners();
     }
   }
