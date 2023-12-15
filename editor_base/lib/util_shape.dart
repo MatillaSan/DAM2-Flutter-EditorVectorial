@@ -6,6 +6,7 @@ class Shape {
   double rotation = 0;
   List<Offset> vertices = [];
   double strokeWidth = 1;
+  Color strokeColor = const Color(0xFF000000);
 
   Shape();
 
@@ -31,5 +32,9 @@ class Shape {
 
   void setStrokeWidth(double width) {
     strokeWidth = width;
+  }
+
+  void setStrokeColor(Color color) {
+    strokeColor = color;
   }
 }

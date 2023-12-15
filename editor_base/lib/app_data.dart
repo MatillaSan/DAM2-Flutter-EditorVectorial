@@ -93,4 +93,9 @@ class AppData with ChangeNotifier {
     newShape.setStrokeWidth(value);
     notifyListeners();
   }
+
+  void setNewShapeColor(Color color) {
+    newShape.setStrokeColor(color);
+    notifyListeners();
+  }
 }

@@ -11,9 +11,55 @@ class LayoutSidebarFormat extends StatefulWidget {
 }
 
 class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
+  late Widget _preloadedColorPicker;
+  final GlobalKey<CDKDialogPopoverState> _anchorColorButton = GlobalKey();
+  final ValueNotifier<Color> _valueColorNotifier =
+      ValueNotifier(const Color(0x800080FF));
+
+  _showPopoverColor(BuildContext context, GlobalKey anchorKey) {
+    final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
+    if (anchorKey.currentContext == null) {
+      // ignore: avoid_print
+      print("Error: anchorKey not assigned to a widget");
+      return;
+    }
+    CDKDialogsManager.showPopoverArrowed(
+      key: key,
+      context: context,
+      anchorKey: anchorKey,
+      isAnimated: true,
+      isTranslucent: false,
+      onHide: () {
+        // ignore: avoid_print
+        print("hide slider $key");
+      },
+      child: _preloadedColorPicker,
+    );
+  }
+
+  Widget _buildPreloadedColorPicker() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ValueListenableBuilder<Color>(
+        valueListenable: _valueColorNotifier,
+        builder: (context, value, child) {
+          return CDKPickerColor(
+            color: value,
+            onChanged: (color) {
+              setState(() {
+                _valueColorNotifier.value = color;
+              });
+            },
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     AppData appData = Provider.of<AppData>(context);
+    _preloadedColorPicker = _buildPreloadedColorPicker();
 
     TextStyle fontBold =
         const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
@@ -38,9 +84,16 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                   Container(
                       alignment: Alignment.centerLeft,
                       width: 80,
-                      child: CDKButtonColor(
-                        onPressed: print("color"),
-                        color: appData.newShape.strokeColor,
+                      child: CDKFieldNumeric(
+                        value: appData.newShape.strokeWidth,
+                        min: 0.01,
+                        max: 100,
+                        units: "px",
+                        increment: 0.5,
+                        decimals: 2,
+                        onValueChanged: (value) {
+                          appData.setNewShapeStrokeWidth(value);
+                        },
                       )),
                 ]),
                 const SizedBox(height: 8),
@@ -55,17 +108,12 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
                     Container(
                         alignment: Alignment.centerLeft,
                         width: 80,
-                        child: CDKFieldNumeric(
-                          value: appData.newShape.strokeWidth,
-                          min: 0.01,
-                          max: 100,
-                          units: "px",
-                          increment: 0.5,
-                          decimals: 2,
-                          onValueChanged: (value) {
-                            appData.setNewShapeStrokeWidth(value);
-                          },
-                        )),
+                        child: CDKButtonColor(
+                            key: _anchorColorButton,
+                            color: _valueColorNotifier.value,
+                            onPressed: () {
+                              _showPopoverColor(context, _anchorColorButton);
+                            })),
                   ],
                 ),
                 const SizedBox(height: 16),
