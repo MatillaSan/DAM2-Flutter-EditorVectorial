@@ -30,6 +30,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
       isAnimated: true,
       isTranslucent: false,
       onHide: () {
+        print("doc popover");
         print(AppData().getDocColor());
       },
       child: _preloadedColorPicker,

@@ -149,7 +149,7 @@ class LayoutDesignPainter extends CustomPainter {
   static void paintShape(Canvas canvas, Shape shape) {
     if (shape.vertices.isNotEmpty) {
       Paint paint = Paint();
-      paint.color = CDKTheme.black;
+      paint.color = shape.strokeColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = shape.strokeWidth;
       double x = shape.position.dx + shape.vertices[0].dx;

@@ -107,9 +107,15 @@ class AppData with ChangeNotifier {
     // Si no hi ha almenys 2 punts, no es podrà dibuixar res
     if (newShape.vertices.length >= 2) {
       double strokeWidthConfig = newShape.strokeWidth;
+      Color strokeColorConfig = strokeColor;
       actionManager.register(ActionAddNewShape(this, newShape));
+      print("Figura nueva");
+      print(strokeColor);
       newShape = Shape();
       newShape.setStrokeWidth(strokeWidthConfig);
+      newShape.setStrokeColor(strokeColorConfig);
+      print("Color figura ?");
+      print(newShape.strokeColor);
     }
   }
 
@@ -120,6 +126,7 @@ class AppData with ChangeNotifier {
 
   void setNewShapeColor(Color color) {
     newShape.setStrokeColor(color);
+    strokeColor = color;
     notifyListeners();
   }
 }
