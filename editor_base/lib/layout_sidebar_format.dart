@@ -34,7 +34,7 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
       onHide: () {
         print("*******");
         print(selectedColor);
-        appData.setStrokeColor(selectedColor);
+        appData.setNewShapeColor(selectedColor);
       },
       child: _preloadedColorPicker,
     );
