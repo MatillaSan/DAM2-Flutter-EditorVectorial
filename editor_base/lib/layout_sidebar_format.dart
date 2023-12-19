@@ -32,8 +32,6 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
       isAnimated: true,
       isTranslucent: false,
       onHide: () {
-        print("*******");
-        print(selectedColor);
         appData.setNewShapeColor(selectedColor);
       },
       child: _preloadedColorPicker,
@@ -50,8 +48,6 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
             color: _valueColorNotifier.value,
             onChanged: (color) {
               setState(() {
-                print("Color seleccionado");
-                print(color);
                 _valueColorNotifier.value = color;
                 selectedColor = color;
               });

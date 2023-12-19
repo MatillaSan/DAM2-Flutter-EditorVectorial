@@ -16,7 +16,8 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
   final ValueNotifier<Color> _valueColorNotifier =
       ValueNotifier(const Color(0x800080FF));
 
-  _showPopoverColor(BuildContext context, GlobalKey anchorKey) {
+  _showPopoverColor(
+      BuildContext context, GlobalKey anchorKey, AppData appData) {
     final GlobalKey<CDKDialogPopoverArrowedState> key = GlobalKey();
     if (anchorKey.currentContext == null) {
       // ignore: avoid_print
@@ -30,8 +31,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
       isAnimated: true,
       isTranslucent: false,
       onHide: () {
-        print("doc popover");
-        print(AppData().getDocColor());
+        appData.changeDocColor(appData.getDocColor());
       },
       child: _preloadedColorPicker,
     );
@@ -46,9 +46,9 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
           return CDKPickerColor(
             color: value,
             onChanged: (color) {
-              appData.setDocColor(_valueColorNotifier.value);
               setState(() {
                 _valueColorNotifier.value = color;
+                appData.setDocColor(_valueColorNotifier.value);
               });
             },
           );
@@ -135,7 +135,8 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
                         key: _anchorColorButton,
                         color: _valueColorNotifier.value,
                         onPressed: () {
-                          _showPopoverColor(context, _anchorColorButton);
+                          _showPopoverColor(
+                              context, _anchorColorButton, appData);
                         })
                   ],
                 ),

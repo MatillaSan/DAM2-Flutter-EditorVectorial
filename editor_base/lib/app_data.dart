@@ -11,7 +11,7 @@ class AppData with ChangeNotifier {
   bool isAltOptionKeyPressed = false;
   double zoom = 95;
   Size docSize = const Size(500, 400);
-  Color docColor = const Color.fromARGB(0, 0, 0, 0);
+  Color docColor = Color.fromARGB(0, 255, 255, 255);
   Color strokeColor = Colors.black;
   String toolSelected = "shape_drawing";
   Shape newShape = Shape();
@@ -83,7 +83,7 @@ class AppData with ChangeNotifier {
   }
 
   void changeStrokeColor(Color color) {
-    Color previousColor = docColor;
+    Color previousColor = strokeColor;
     actionManager.register(ActionSetDocColor(this, previousColor, color));
   }
 
@@ -109,13 +109,9 @@ class AppData with ChangeNotifier {
       double strokeWidthConfig = newShape.strokeWidth;
       Color strokeColorConfig = strokeColor;
       actionManager.register(ActionAddNewShape(this, newShape));
-      print("Figura nueva");
-      print(strokeColor);
       newShape = Shape();
       newShape.setStrokeWidth(strokeWidthConfig);
       newShape.setStrokeColor(strokeColorConfig);
-      print("Color figura ?");
-      print(newShape.strokeColor);
     }
   }
 
@@ -125,8 +121,8 @@ class AppData with ChangeNotifier {
   }
 
   void setNewShapeColor(Color color) {
+    setStrokeColor(color);
     newShape.setStrokeColor(color);
-    //strokeColor = color;
     notifyListeners();
   }
 }

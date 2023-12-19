@@ -12,6 +12,7 @@ class LayoutDesignPainter extends CustomPainter {
   final double centerY;
   static bool _shadersReady = false;
   static ui.Shader? _shaderGrid;
+  static Color _colorGrid = CDKTheme.white;
 
   LayoutDesignPainter({
     required this.appData,
@@ -36,7 +37,7 @@ class LayoutDesignPainter extends CustomPainter {
     // White and grey grid
     ui.PictureRecorder recorder = ui.PictureRecorder();
     Canvas imageCanvas = Canvas(recorder);
-    final paint = Paint()..color = CDKTheme.white;
+    final paint = Paint()..color = _colorGrid;
     imageCanvas.drawRect(const Rect.fromLTWH(0, 0, size, size), paint);
     imageCanvas.drawRect(const Rect.fromLTWH(size, size, size, size), paint);
     paint.color = CDKTheme.grey100;
@@ -204,6 +205,8 @@ class LayoutDesignPainter extends CustomPainter {
     }
 
     // Dibuixa el fons del document aquí ...
+    Paint paint = Paint()..color = appData.docColor;
+    canvas.drawRect(Rect.fromLTWH(0, 0, docW, docH), paint);
 
     // Dibuixa la llista de poligons (segons correspon, relatiu a la seva posició)
     if (appData.shapesList.isNotEmpty) {
