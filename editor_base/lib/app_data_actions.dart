@@ -108,29 +108,6 @@ class ActionSetDocColor implements Action {
   }
 }
 
-class ActionSetStrokeColor implements Action {
-  final Color previousColor;
-  final Color newColor;
-  final AppData appData;
-
-  ActionSetStrokeColor(this.appData, this.previousColor, this.newColor);
-
-  _action(Color color) {
-    appData.strokeColor = color;
-    appData.forceNotifyListeners();
-  }
-
-  @override
-  void undo() {
-    _action(previousColor);
-  }
-
-  @override
-  void redo() {
-    _action(newColor);
-  }
-}
-
 class ActionAddNewShape implements Action {
   final AppData appData;
   final Shape newShape;

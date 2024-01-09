@@ -14,7 +14,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
   late Widget _preloadedColorPicker;
   final GlobalKey<CDKDialogPopoverState> _anchorColorButton = GlobalKey();
   final ValueNotifier<Color> _valueColorNotifier =
-      ValueNotifier(const Color(0x800080FF));
+      ValueNotifier(AppData().docColor);
 
   _showPopoverColor(
       BuildContext context, GlobalKey anchorKey, AppData appData) {
@@ -31,7 +31,7 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
       isAnimated: true,
       isTranslucent: false,
       onHide: () {
-        appData.changeDocColor(appData.getDocColor());
+        appData.changeDocColor(_valueColorNotifier.value);
       },
       child: _preloadedColorPicker,
     );
@@ -48,7 +48,6 @@ class LayoutSidebarDocumentState extends State<LayoutSidebarDocument> {
             onChanged: (color) {
               setState(() {
                 _valueColorNotifier.value = color;
-                appData.setDocColor(_valueColorNotifier.value);
               });
             },
           );

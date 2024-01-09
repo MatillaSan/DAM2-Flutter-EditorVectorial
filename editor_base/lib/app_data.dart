@@ -11,8 +11,8 @@ class AppData with ChangeNotifier {
   bool isAltOptionKeyPressed = false;
   double zoom = 95;
   Size docSize = const Size(500, 400);
-  Color docColor = Color.fromARGB(0, 255, 255, 255);
-  Color strokeColor = Colors.black;
+  Color docColor = Color.fromARGB(100, 0, 0, 0);
+  Color strokeColor = Color.fromARGB(255, 0, 0, 0);
   String toolSelected = "shape_drawing";
   Shape newShape = Shape();
   List<Shape> shapesList = [];
@@ -65,14 +65,6 @@ class AppData with ChangeNotifier {
     actionManager.register(ActionSetDocHeight(this, previousHeight, value));
   }
 
-  Color getDocColor() {
-    return docColor;
-  }
-
-  void setDocColor(Color color) {
-    docColor = color;
-  }
-
   void changeDocColor(Color color) {
     Color previousColor = docColor;
     actionManager.register(ActionSetDocColor(this, previousColor, color));
@@ -80,11 +72,6 @@ class AppData with ChangeNotifier {
 
   void setStrokeColor(Color color) {
     strokeColor = color;
-  }
-
-  void changeStrokeColor(Color color) {
-    Color previousColor = strokeColor;
-    actionManager.register(ActionSetDocColor(this, previousColor, color));
   }
 
   void setToolSelected(String name) {

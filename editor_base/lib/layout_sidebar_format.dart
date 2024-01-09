@@ -14,7 +14,7 @@ class LayoutSidebarFormatState extends State<LayoutSidebarFormat> {
   late Widget _preloadedColorPicker;
   final GlobalKey<CDKDialogPopoverState> _anchorColorButton = GlobalKey();
   final ValueNotifier<Color> _valueColorNotifier =
-      ValueNotifier(const Color(0x800080FF));
+      ValueNotifier(AppData().strokeColor);
   Color selectedColor = const Color(0x800080FF);
 
   _showPopoverColor(
